@@ -1,0 +1,164 @@
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.App {
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 130px;
+  padding: 10px;
+  color: white;
+  text-align: center;
+}
+
+.App-header h2 {
+  margin: 10px 0px;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
+
+.code {
+  float: left;
+  width: 480px;
+  margin: 20px;
+  margin-right: 10px;
+  padding: 10px;
+  border: 1px solid gray;
+}
+
+.controls {
+  text-align: center;
+}
+
+.controls .key {
+  margin: 5px;
+}
+
+.line {
+  margin: 15px 0px;
+}
+
+.line-number {
+  width: 36px;
+  height: 36px;
+  margin-right: 5px;
+  text-align: center;
+  display: inline-block;
+  vertical-align: bottom;
+  font-size: 36px;
+  line-height: 36px;
+}
+
+.cmd {
+  width: 36px;
+  height: 34px;
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 2px;
+  padding-top: 2px;
+  position: relative;
+}
+
+.cmd.current, .cmd.current.empty {
+  border: 2px solid #333;
+  margin: 0px;
+}
+
+.cmd.empty {
+  border: 1px solid #ccc;
+  margin: 1px;
+}
+
+.counter {
+  position: absolute;
+  right: -4px;
+  top: -4px;
+  background: red;
+  color: white;
+  z-index: 1;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  font-size: 13px;
+  border-radius: 8px;
+  font-weight: bold;
+  padding-bottom: 0px;
+}
+
+button.newline {
+
+}
+
+
+.grid {
+  float: left;
+  margin: 20px;
+}
+
+.grid table {
+  border-collapse: collapse;
+}
+
+.cell {
+  border: 1px solid #ccc;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  padding: 4px 1px 0px 1px;
+}
+
+.cell.current {
+  background: #ccc;
+}
+
+.grid .emoji2 {
+  font-size: 28px;
+  line-height: 24px;
+}
+
+
+
+.input {
+  clear: both;
+  width: 1042px;
+  margin: 20px;
+}
+
+.input-row {
+}
+
+.key {
+  display: inline-block;
+  vertical-align: top;
+  width: 36px;
+  height: 36px;
+  text-align: center;
+  margin: 2px;
+}
+
+.emoji2 {
+  font-size: 36px;
+  line-height: 32px;
+}
+
+.spacer {
+  display: inline-block;
+  vertical-align: top;
+  width: 36px;
+  height: 36px;
+  margin: 2px;
+}

@@ -1,3 +1,36 @@
+* {
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 65px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 95px;
+  padding: 0px;
+  padding-bottom: 5px;
+  padding-top: 10px;
+  color: white;
+  text-align: center;
+}
+
+.App-header h2 {
+  margin: 0px;
+  margin-top: -5px;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 span.emoji {
 	display: -moz-inline-box;
 	-moz-box-orient: vertical;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Tappable from 'react-tappable';
 import Emoji from './Emoji';
 
 class Input extends Component {
@@ -142,9 +143,9 @@ class Input extends Component {
 class Key extends Component {
   render() {
     return (
-      <div className="key" onClick={() => this.props.onKey(this.props.value)}>
+      <Tappable className="key" onTap={() => this.props.onKey(this.props.value)}>
       	<Emoji value={this.props.value} />
-      </div>
+      </Tappable>
     );
   }
 }

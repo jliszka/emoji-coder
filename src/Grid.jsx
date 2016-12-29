@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Emoji from "./Emoji";
+import Tappable from 'react-tappable';
 import cx from 'classnames';
 
 class Grid extends Component {
@@ -20,10 +21,12 @@ class Grid extends Component {
                       'cell': true,
                       'current': this.props.gx === i && this.props.gy === j
                     });
-                    const gcell = gline[i] || '';
+                    const gcell = gline[i] || ' ';
                     return (
                     	<td key={"cell_"+j+"_"+i} className={classes}>
-                        <Emoji value={gcell} />
+                        <Tappable className="cell-inner" onTap={() => this.props.setGridPos(i, j)}>
+                          <Emoji value={gcell} />
+                        </Tappable>
                     	</td>
                     );
                   })

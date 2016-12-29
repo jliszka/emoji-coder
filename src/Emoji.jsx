@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import EmojiConvertor from '../public/js/emoji';
 
 const emoji = new EmojiConvertor();
-emoji.img_sets.apple.sheet = '/img/sheet_apple_64.png';
+emoji.img_sets.apple.sheet = 'img/sheet_apple_64.png';
 emoji.use_sheet = true;
 emoji.replace_mode = 'img';
 

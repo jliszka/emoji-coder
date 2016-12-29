@@ -15,12 +15,7 @@ class VM {
         s.pos = 0;
         return -1;
       }
-      const k = s.line + "_" + s.pos;
-      const counters = s.counters || {};
-      s.counters = counters;
-      counters[k] = (counters[k] || n) - 1;
-      if (counters[k] === 0) {
-        counters[k] = null;
+      if (this.outer.decrementAndCheckCounter(s, n)) {
         return 1;
       } else {
         s.pos = 0;
@@ -33,12 +28,7 @@ class VM {
         s.pos = 0;
         return -1;
       }
-      const k = s.line + "_" + s.pos;
-      const counters = s.counters || {};
-      s.counters = counters;
-      counters[k] = (counters[k] || n) - 1;
-      if (counters[k] === 0) {
-        counters[k] = null;
+      if (this.outer.decrementAndCheckCounter(s, n)) {
         return 1;
       } else {
         s.line = 0;
@@ -68,6 +58,18 @@ class VM {
       s.playing = false;
       return -1;
     }
+  }
+
+  decrementAndCheckCounter(state, n) {
+    const k = state.line + "_" + state.pos;
+    const counters = state.counters || {};
+    state.counters = counters;
+    counters[k] = (counters[k] || n) - 1;
+    if (counters[k] === 0) {
+      counters[k] = null;
+      return true;
+    }
+    return false;
   }
 
   setGrid(grid, x, y, c) {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import Emoji from './Emoji';
+import Tappable from 'react-tappable';
 import cx from 'classnames';
+import Emoji from './Emoji';
 
 class Code extends Component {
   render() {
@@ -8,28 +9,28 @@ class Code extends Component {
       <div className="code">
         <div className="controls">
           <div className="spacer"></div>
-          <div className="key" onClick={this.props.doReset}>
+          <Tappable className="key" onTap={this.props.doReset}>
             <Emoji value=":house:" />
-          </div>
+          </Tappable>
           {
             this.props.playing ?
-              <div className="key" onClick={this.props.doPause}>
+              <Tappable className="key" onTap={this.props.doPause}>
                 <Emoji value=":double_vertical_bar:" />
-              </div>
-            : <div className="key" onClick={this.props.doPlay}>
+              </Tappable>
+            : <Tappable className="key" onTap={this.props.doPlay}>
                 <Emoji value=":arrow_forward:" />
-              </div>
+              </Tappable>
           }
-          <div className="key" onClick={this.props.doStep}>
+          <Tappable className="key" onTap={this.props.doStep}>
             <Emoji value=":black_right_pointing_triangle_with_double_vertical_bar:" />
-          </div>
-          <div className="key" onClick={this.props.doFF}>
+          </Tappable>
+          <Tappable className="key" onTap={this.props.doFF}>
             <Emoji value=":fast_forward:" />
-          </div>
+          </Tappable>
           <div className="spacer"></div>
-          <div className="key" onClick={this.props.doRun}>
+          <Tappable className="key" onTap={this.props.doRun}>
             <Emoji value=":black_right_pointing_double_triangle_with_vertical_bar:" />
-          </div>
+          </Tappable>
         </div>
         {
           this.props.lines.concat([[]]).map((line, idx) => {
@@ -63,10 +64,10 @@ class Line extends Component {
             const counterKey = this.props.line + "_" + idx;
             const counterValue = this.props.counters && this.props.counters[counterKey];
             return (
-            	<div key={"cmd_"+this.props.line+"_"+idx} className={classes} onClick={() => this.props.setPos(this.props.line, idx)}>
+            	<Tappable key={"cmd_"+this.props.line+"_"+idx} className={classes} onTap={() => this.props.setPos(this.props.line, idx)}>
                 { typeof counterValue === 'number' && <div className="counter">{counterValue}</div> }
             		<Emoji value={cmd} />
-              </div>
+              </Tappable>
             );
           })
         }

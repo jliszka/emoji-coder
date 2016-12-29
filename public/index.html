@@ -2,21 +2,17 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <link href="/css/emoji.css" rel="stylesheet" type="text/css" />
+    <link href="css/emoji.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
-      document.addEventListener('gesturestart', function (e) {
-        e.preventDefault();
-      });
-      var lastTouchEnd = 0;
-      document.documentElement.addEventListener('touchend', function (event) {
-        var now = (new Date()).getTime();
-        if (now - lastTouchEnd <= 300) {
-          event.preventDefault();
-        }
-        lastTouchEnd = now;
-      }, false);
+      function onLoad() {
+        start();
+      }
     </script>
     <!--
       Notice the use of %PUBLIC_URL% in the tag above.
@@ -27,10 +23,15 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Emoji Coder</title>
   </head>
-  <body>
+  <body onload="onLoad()">
+    <div class="App-header">
+      <img src="%PUBLIC_URL%/img/logo.svg" class="App-logo" alt="logo" />
+      <h2>Emoji Coder</h2>
+    </div>
     <div id="root"></div>
+
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

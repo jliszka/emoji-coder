@@ -6,6 +6,10 @@
 	user-select: none;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 65px;

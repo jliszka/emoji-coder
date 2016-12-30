@@ -23,8 +23,6 @@ class Input extends Component {
           <Key onKey={this.props.onKey} value="ru"/>
 
           <Spacer />
-          <Spacer />
-          <Spacer />
 
           <Key onKey={this.props.onKey} value=":red_circle:"/>
           <Key onKey={this.props.onKey} value=":large_blue_circle:"/>
@@ -55,8 +53,6 @@ class Input extends Component {
           <Key onKey={this.props.onKey} value="lk"/>
           <Key onKey={this.props.onKey} value="st"/>
 
-          <Spacer />
-          <Spacer />
           <Spacer />
 
           <Key onKey={this.props.onKey} value=":smile:"/>
@@ -89,8 +85,6 @@ class Input extends Component {
           <Spacer />
 
           <Spacer />
-          <Spacer />
-          <Spacer />
 
           <Key onKey={this.props.onKey} value=":apple:"/>
           <Key onKey={this.props.onKey} value=":pear:"/>
@@ -110,8 +104,6 @@ class Input extends Component {
         <div className="input-row">
           <Spacer />
           <Key onKey={this.props.onKey} value={0}/>
-          <Spacer />
-          <Spacer />
           <Spacer />
           <Spacer />
           <Spacer />

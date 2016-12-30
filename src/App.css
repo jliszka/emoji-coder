@@ -130,13 +130,13 @@ button.newline {
   width: 36px;
   height: 36px;
   text-align: center;
-  margin: 2px;
+  margin: 4px;
 }
 
 .feedback {
   position: absolute;
   padding-top: 2px;
-  top: -44px;
+  top: -52px;
   background: white;
   border: 1px solid gray;
   box-shadow: 0px 0px 5px gray;
@@ -153,7 +153,7 @@ button.newline {
   vertical-align: top;
   width: 36px;
   height: 36px;
-  margin: 2px;
+  margin: 4px;
 }
 
 

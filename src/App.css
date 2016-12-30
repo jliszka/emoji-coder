@@ -75,8 +75,8 @@ button.newline {
 
 }
 
-
 .grid {
+  position: relative;
   float: left;
   margin: 20px;
 }
@@ -94,7 +94,7 @@ button.newline {
 }
 
 .cell.current {
-  background: #ccc;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .cell-inner {
@@ -108,6 +108,11 @@ button.newline {
   line-height: 24px;
 }
 
+.grid-target {
+  position: absolute;
+  opacity: 0.4;
+  z-index: -1;
+}
 
 
 .input {
@@ -138,4 +143,47 @@ button.newline {
   width: 36px;
   height: 36px;
   margin: 2px;
+}
+
+
+
+.target {
+  margin: 40px 0px 0px 40px;
+  float: left;
+  opacity: 0.5;
+}
+
+.target.unlocked {
+  opacity: 1.0;
+}
+
+.target .emoji2 {
+  font-size: 64px;
+}
+
+.tada {
+  position: absolute;
+  text-align: center;
+  vertical-align: middle;
+  top: 120px;
+  left: 120px;
+  width: 200px;
+  height: 200px;
+}
+
+.tada .emoji2 {
+  font-size: 100px;
+  line-height: 200px;
+  vertical-align: middle;
+  animation: tada-animation infinite 0.3s ease-in-out;
+  animation-direction: alternate;
+}
+
+@keyframes tada-animation {
+  from { font-size: 100px; }
+  to { font-size: 130px; }
+}
+
+.clear {
+  clear: both;
 }

@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import Code from './Code';
 import Grid from './Grid';
 import Input from './Input';
+import Tada from './Tada';
+import Target from './Target';
 import VM from './VM';
+import targetGrids from './Targets';
 import './App.css';
 
 class App extends Component {
@@ -10,6 +13,7 @@ class App extends Component {
   constructor() {
     super();
     this.vm = new VM();
+    this.storage = window.localStorage;
     this.state = {
       lines: [],
       line: 0,
@@ -18,6 +22,7 @@ class App extends Component {
       gx: 0,
       gy: 0,
       playing: false,
+      unlocked: parseInt(this.storage.getItem('unlocked') || 0, 10)
     };
   }
 
@@ -29,7 +34,6 @@ class App extends Component {
   }
 
   setGridPos(x, y) {
-    console.log("setGrid");
     this.setState({
       gx: x,
       gy: y
@@ -53,7 +57,7 @@ class App extends Component {
       this.setState({
         lines: lines,
         line: newLine,
-        pos: lines[newLine].length
+        pos: lines[newLine] ? lines[newLine].length : 0
       });
     }
   }
@@ -78,6 +82,7 @@ class App extends Component {
       grid: [],
       playing: false,
       counters: null,
+      targetCorrect: false,
     })
   }
 
@@ -108,6 +113,7 @@ class App extends Component {
           this.doSteps();
         } else {
           this.setState({ playing: false });
+          this.checkTargetGrid();
         }
       }, this.state.speed || 1000);
     }, this.state.speed || 1000);
@@ -133,6 +139,49 @@ class App extends Component {
     }
     newState.playing = false;
     this.setState(newState);
+    this.checkTargetGrid();
+  }
+
+  selectTargetGrid(idx) {
+    console.log(idx);
+    this.doReset();
+    this.setState({
+      targetGrid: idx
+    });
+  }
+
+  resetTada() {
+    this.setState({
+      targetCorrect: false
+    });
+  }
+
+  checkTargetGrid() {
+    const grid = this.state.grid;
+    const target = targetGrids[this.state.targetGrid] && targetGrids[this.state.targetGrid].grid;
+    if (!target) return;
+
+    let correct = true;
+    for (var i = 0; i < 12; i++) {
+      for (var j = 0; j < 12; j++) {
+        const gcell = (grid[i]||[])[j] || null;
+        const tcell = (target[i]||[])[j] || null;
+        if (gcell !== tcell) {
+          correct = false;
+          break;
+        }
+      }
+      if (!correct) break;
+    }
+
+    if (correct) {
+      const newUnlocked = Math.max(this.state.unlocked, this.state.targetGrid + 1);
+      this.storage.setItem('unlocked', newUnlocked);
+      this.setState({
+        targetCorrect: true,
+        unlocked: newUnlocked
+      });
+    }
   }
 
   render() {
@@ -152,18 +201,41 @@ class App extends Component {
           doPause={() => this.doPause()}
           doStep={() => this.doStep()} />
 
-        <Grid
-          grid={this.state.grid}
-          gx={this.state.gx}
-          gy={this.state.gy}
-          setGridPos={(x, y) => this.setGridPos(x, y)}
-        />
+        <div className="grid">
+          {
+            (this.state.targetGrid === 0 || this.state.targetGrid > 0) &&
+            <div className="grid-target">
+              <Grid grid={targetGrids[this.state.targetGrid].grid} />
+            </div>
+          }
+          <Tada show={this.state.targetCorrect} onTap={() => this.resetTada()}/>
+          <Grid
+            grid={this.state.grid}
+            gx={this.state.gx}
+            gy={this.state.gy}
+            setGridPos={(x, y) => this.setGridPos(x, y)}
+          />
+        </div>
 
         <Input onKey={k => this.onKey(k)} onDelete={() => this.onDelete()} />
+
+        {
+          targetGrids.map((g, i) => {
+            return (
+              <Target
+                key={"target_"+i}
+                name={g.name}
+                unlocked={i <= this.state.unlocked}
+                onSelect={() => this.selectTargetGrid(i)} />
+            );
+          })
+        }
+
+        <Target key={"target_none"} unlocked={true} onSelect={() => this.selectTargetGrid(null)} name=":no_entry_sign:" />
+        <div className="clear"/>
       </div>
     );
   }
 }
-
 
 export default App;

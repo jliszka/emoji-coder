@@ -47,7 +47,7 @@ class Input extends Component {
           <Spacer />
 
           <Key onKey={this.props.onKey} value="lt"/>
-          <Key onKey={this.props.onKey} value="hr"/>
+          <Spacer />
           <Key onKey={this.props.onKey} value="rt"/>
 
           <Spacer />
@@ -141,9 +141,34 @@ class Input extends Component {
 }
 
 class Key extends Component {
+
+  constructor() {
+    super();
+    this.state = { feedback: false };
+  }
+
+  showFeedback() {
+    this.setState({
+      feedback: true
+    });
+  }
+
+  hideFeedback() {
+    this.setState({
+      feedback: false
+    });
+  }
+
   render() {
     return (
-      <Tappable className="key" onTap={() => this.props.onKey(this.props.value)}>
+      <Tappable
+        className="key"
+        onTap={() => this.props.onKey(this.props.value)}
+        onTouchStart={() => this.showFeedback()}
+        onMouseDown={() => this.showFeedback()}
+        onTouchEnd={() => this.hideFeedback()}
+        onMouseUp={() => this.hideFeedback()}>
+        { this.state.feedback && <div className="feedback"><Emoji value={this.props.value} /></div>}
       	<Emoji value={this.props.value} />
       </Tappable>
     );

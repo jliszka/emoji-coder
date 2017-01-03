@@ -1,6 +1,30 @@
 .App {
 }
 
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 65px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 65px;
+  padding: 0px;
+  padding-bottom: 5px;
+  padding-top: 15px;
+  color: white;
+  text-align: center;
+}
+
+.App-header h2 {
+  margin: 0px;
+  margin-top: -3px;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
 .code {
   float: left;
@@ -8,7 +32,9 @@
   margin: 20px;
   margin-right: 10px;
   padding: 10px;
-  border: 1px solid gray;
+  border: 1px solid #888;
+  max-height: 425px;
+  border-radius: 8px;
 }
 
 .controls {
@@ -17,6 +43,11 @@
 
 .controls .key {
   margin: 5px;
+}
+
+.lines {
+  max-height: 378px;
+  overflow-y: scroll;
 }
 
 .line {
@@ -108,7 +139,7 @@ button.newline {
   line-height: 24px;
 }
 
-.grid-target {
+.current-puzzle {
   position: absolute;
   opacity: 0.4;
   z-index: -1;
@@ -139,7 +170,7 @@ button.newline {
   top: -52px;
   background: white;
   border: 1px solid gray;
-  box-shadow: 0px 0px 5px gray;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
   border-radius: 3px;
 }
 
@@ -157,19 +188,75 @@ button.newline {
 }
 
 
-
-.target {
-  margin: 40px 0px 0px 40px;
-  float: left;
-  opacity: 0.5;
+.puzzles {
+  float: right;
+  margin-right: 15px;
+  margin-top: 15px;
+  margin-left: -50px;
 }
 
-.target.unlocked {
+.puzzle-modal {
+  position: absolute;
+  width: 675px;
+  top: 150px;
+  left: 130px;
+  border: 1px solid gray;
+  background: white;
+  border-radius: 8px;
+  z-index: 2;
+  box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+}
+.puzzle-books {
+  margin-bottom: 30px;
+}
+.puzzle-book {
+  opacity: 0.5;
+}
+.puzzle-book.unlocked {
+  opacity: 1.0;
+}
+.puzzle-clear {
+  float: right;
+}
+
+.puzzle-book .emoji2 {
+  font-size: 64px;
+  margin: 20px;
+}
+
+.puzzle {
+  margin: 10px;
+  float: left;
+  opacity: 0.5;
+  position: relative;
+}
+
+.puzzle.unlocked {
   opacity: 1.0;
 }
 
-.target .emoji2 {
+.puzzle .emoji2 {
   font-size: 64px;
+}
+
+.puzzle-number {
+  position: absolute;
+  font-size: 24px;
+  font-weight: bold;
+  top: 31px;
+  left: 25.5px;
+
+  background-color: #333;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px 1px;
+}
+
+.puzzle-number.two-digit {
+  left: 18px;
 }
 
 .tada {

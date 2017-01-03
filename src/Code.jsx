@@ -32,6 +32,7 @@ class Code extends Component {
             <Emoji value=":black_right_pointing_double_triangle_with_vertical_bar:" />
           </Tappable>
         </div>
+        <div className="lines">
         {
           this.props.lines.concat([[]]).map((line, idx) => {
             return <Line
@@ -44,6 +45,7 @@ class Code extends Component {
               current={this.props.line === idx} />
           })
         }
+        </div>
       </div>
     );
   }

@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import Code from './Code';
+import Emoji from './Emoji';
 import Grid from './Grid';
 import Input from './Input';
+import Storage from './Storage';
 import Tada from './Tada';
-import Target from './Target';
 import VM from './VM';
-import targetGrids from './Targets';
+import PuzzleMenu from './PuzzleMenu';
+import puzzles from './Puzzles';
 import './App.css';
 
 class App extends Component {
 
+
   constructor() {
     super();
     this.vm = new VM();
-    this.storage = window.localStorage;
+    this.storage = new Storage();
     this.state = {
       lines: [],
       line: 0,
@@ -22,11 +25,12 @@ class App extends Component {
       gx: 0,
       gy: 0,
       playing: false,
-      unlocked: parseInt(this.storage.getItem('unlocked') || 0, 10)
+      solved: this.storage.get('solved') || {}
     };
   }
 
   setPos(line, pos) {
+    if (this.state.playing) return;
     this.setState({
       line: line,
       pos: pos
@@ -34,6 +38,7 @@ class App extends Component {
   }
 
   setGridPos(x, y) {
+    if (this.state.playing) return;
     this.setState({
       gx: x,
       gy: y
@@ -41,6 +46,7 @@ class App extends Component {
   }
 
   onDelete() {
+    if (this.state.playing) return;
     const line = this.state.lines[this.state.line].slice();
     if (this.state.pos > 0) {
       line.splice(this.state.pos-1, 1);
@@ -63,6 +69,7 @@ class App extends Component {
   }
 
   onKey(k) {
+    if (this.state.playing) return;
     const line = (this.state.lines[this.state.line] || []).slice();
     line.splice(this.state.pos, 0, k);
     const lines = this.state.lines.slice();
@@ -82,7 +89,7 @@ class App extends Component {
       grid: [],
       playing: false,
       counters: null,
-      targetCorrect: false,
+      puzzleCorrect: false,
     })
   }
 
@@ -113,7 +120,7 @@ class App extends Component {
           this.doSteps();
         } else {
           this.setState({ playing: false });
-          this.checkTargetGrid();
+          this.checkPuzzle();
         }
       }, this.state.speed || 1000);
     }, this.state.speed || 1000);
@@ -139,34 +146,67 @@ class App extends Component {
     }
     newState.playing = false;
     this.setState(newState);
-    this.checkTargetGrid();
+    this.checkPuzzle();
   }
 
-  selectTargetGrid(idx) {
-    console.log(idx);
+  toggleMenu() {
+    this.setState({
+      menuOpen: !this.state.menuOpen
+    });
+  }
+
+  toggleBook(book) {
+    if (this.state.book === book) {
+      this.setState({
+        book: null
+      });
+    } else {
+      this.setState({
+        book: book
+      });
+    }
+  }
+
+  selectPuzzle(book, puzzle) {
+    if (this.state.playing) return;
     this.doReset();
     this.setState({
-      targetGrid: idx
+      currentBook: book,
+      currentPuzzle: puzzle
     });
+    if (book !== null) {
+      const lines = puzzles[book].puzzles[puzzle].lines;
+      if (lines) {
+        this.setState({ lines: lines });
+      }
+    }
   }
 
   resetTada() {
     this.setState({
-      targetCorrect: false
+      puzzleCorrect: false,
+      menuOpen: true
     });
   }
 
-  checkTargetGrid() {
+  currentPuzzleGrid() {
+    if (this.state.currentBook !== null && this.state.currentBook !== undefined) {
+      return puzzles[this.state.currentBook].puzzles[this.state.currentPuzzle].grid;
+    }
+    return null;
+  }
+
+  checkPuzzle() {
     const grid = this.state.grid;
-    const target = targetGrids[this.state.targetGrid] && targetGrids[this.state.targetGrid].grid;
-    if (!target) return;
+    const puzzle = this.currentPuzzleGrid();
+    if (!puzzle) return;
 
     let correct = true;
     for (var i = 0; i < 12; i++) {
       for (var j = 0; j < 12; j++) {
         const gcell = (grid[i]||[])[j] || null;
-        const tcell = (target[i]||[])[j] || null;
-        if (gcell !== tcell) {
+        const pcell = (puzzle[i]||[])[j] || null;
+        if (gcell !== pcell) {
           correct = false;
           break;
         }
@@ -175,18 +215,31 @@ class App extends Component {
     }
 
     if (correct) {
-      const newUnlocked = Math.max(this.state.unlocked, this.state.targetGrid + 1);
-      this.storage.setItem('unlocked', newUnlocked);
+      const newSolved = Object.assign({}, this.state.solved || {});
+      newSolved[this.state.currentBook] = Math.max(this.state.solved[this.state.currentBook] || 0, this.state.currentPuzzle);
+      this.storage.set('solved', newSolved);
       this.setState({
-        targetCorrect: true,
-        unlocked: newUnlocked
+        puzzleCorrect: true,
+        solved: newSolved
       });
     }
   }
 
   render() {
+    const puzzle = this.currentPuzzleGrid();
     return (
       <div className="App">
+        <div className="App-header">
+          <PuzzleMenu
+            book={this.state.book}
+            solved={this.state.solved}
+            open={this.state.menuOpen}
+            toggleMenu={() => this.toggleMenu()}
+            toggleBook={b => this.toggleBook(b)}
+            selectPuzzle={(b, p) => this.selectPuzzle(b, p)} />
+          <Emoji value=":computer:"/>
+          <h2>Emoji Coder</h2>
+        </div>
         <Code
           lines={this.state.lines}
           line={this.state.line}
@@ -203,12 +256,12 @@ class App extends Component {
 
         <div className="grid">
           {
-            (this.state.targetGrid === 0 || this.state.targetGrid > 0) &&
-            <div className="grid-target">
-              <Grid grid={targetGrids[this.state.targetGrid].grid} />
+            puzzle &&
+            <div className="current-puzzle">
+              <Grid grid={puzzle} />
             </div>
           }
-          <Tada show={this.state.targetCorrect} onTap={() => this.resetTada()}/>
+          <Tada show={this.state.puzzleCorrect} onTap={() => this.resetTada()}/>
           <Grid
             grid={this.state.grid}
             gx={this.state.gx}
@@ -219,20 +272,6 @@ class App extends Component {
 
         <Input onKey={k => this.onKey(k)} onDelete={() => this.onDelete()} />
 
-        {
-          targetGrids.map((g, i) => {
-            return (
-              <Target
-                key={"target_"+i}
-                name={g.name}
-                unlocked={i <= this.state.unlocked}
-                onSelect={() => this.selectTargetGrid(i)} />
-            );
-          })
-        }
-
-        <Target key={"target_none"} unlocked={true} onSelect={() => this.selectTargetGrid(null)} name=":no_entry_sign:" />
-        <div className="clear"/>
       </div>
     );
   }
